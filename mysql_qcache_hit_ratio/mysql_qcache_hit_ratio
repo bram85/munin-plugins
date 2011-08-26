@@ -1,0 +1,61 @@
+#!/bin/bash
+
+# Munin plugin which calculates the hit ratio of a MySQL query cache ( hits / inserts ).
+#
+# (c) 2011 Bram Schoenmakers <me@bramschoenmakers.nl>
+
+#%# family=contrib
+#%# capabilities=autoconf
+
+getVariable() {
+  local OUTPUT=$(mysqladmin -u ${mysql_user:-invalid} -p${mysql_pass:-invalid} -h ${mysql_host:-localhost} extended-status 2>/dev/null | grep "$1" || echo error)
+
+  [ "$OUTPUT" = "error" ] && exit 1
+
+  echo $OUTPUT | cut -d \| -f 3 | sed -e "s/\s//g"
+}
+
+getRatio() {
+  local INSERTS=$(getVariable "Qcache_inserts")
+  [ -z "$INSERTS" ] && exit 1
+
+  if [ "$INSERTS" -eq 0 ]; then
+    # undefined
+    echo U
+  else
+    local HITS=$(getVariable "Qcache_hits")
+    [ -z $HITS ] && exit 1
+
+    echo "scale=1; $HITS / $INSERTS" | bc
+  fi
+}
+
+case "$1" in
+  config) cat <<'EOM'
+graph_title Query Cache Hit Ratio
+graph_vlabel hits / inserts
+graph_category mysql2
+ratio.label ratio
+ratio.info The ratio of query cache hits and query cache inserts.
+EOM
+    exit 0;;
+  autoconf)
+    if ! which bc > /dev/null; then
+      echo "no (bc unavailable)"
+    elif ! which mysqladmin > /dev/null; then
+      echo "no (mysqladmin unvailable)"
+    else
+      echo yes
+    fi
+
+    exit 0;;
+esac
+
+RATIO=$(getRatio)
+if [ -z "$RATIO" ]; then
+  echo "Could not retrieve the variable values."
+  exit 1
+fi
+
+echo "ratio.value" $RATIO
+
