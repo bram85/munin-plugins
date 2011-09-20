@@ -21,7 +21,7 @@ getRatio() {
 
   if [ "$INSERTS" -eq 0 ]; then
     # undefined
-    echo U
+    echo 0.0
   else
     local HITS=$(getVariable "Qcache_hits")
     [ -z $HITS ] && exit 1
