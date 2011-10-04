@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Munin plugin which reads the daily, weekly and monthly bandwidth usage.
+# Munin plugin which reads the hourly, daily and monthly bandwidth usage.
 #
 # (c) 2011 Bram Schoenmakers
 
@@ -13,7 +13,7 @@ error() {
   exit 1
 }
 
-# par1: "hourly", "daily", "weekly" or "monthly"
+# par1: "hourly", "daily" or "monthly"
 # par2: "tx" or "rx"
 getBandwidth() {
   [ $# != 2 ] && exit 1
@@ -33,11 +33,11 @@ getBandwidth() {
 
 PARAMS=${0#*vnstat_}
 INTERFACE=$(echo "$PARAMS" | cut -d _ -f 1) # eth0
-PERIOD=$(echo "$PARAMS" | cut -d _ -f 2) # hourly, daily, weekly or monthly
+PERIOD=$(echo "$PARAMS" | cut -d _ -f 2) # hourly, daily, monthly
 DIRECTION=$(echo "$PARAMS" | cut -d _ -f 3) # rx or tx
 
 # sanity checks
-[ "$PERIOD" = "hourly" ] || [ "$PERIOD" = "daily" ] || [ "$PERIOD" = "weekly" ] || [ "$PERIOD" = "monthly" ] || error "Invalid period."
+[ "$PERIOD" = "hourly" ] || [ "$PERIOD" = "daily" ] || [ "$PERIOD" = "monthly" ] || error "Invalid period."
 [ "$DIRECTION" = "rx" ] || [ "$DIRECTION" = "tx" ] || [ "$DIRECTION" = "total" ] || [ "$DIRECTION" = "rxtx" ] || error "Invalid direction."
 
 case "$1" in
