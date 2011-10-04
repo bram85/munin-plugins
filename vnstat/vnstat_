@@ -79,7 +79,7 @@ if [ "$DIRECTION" = "total" ] || [ "$DIRECTION" = "rxtx" ]; then
   VALUE2=$(getBandwidth $PERIOD tx)
   [ $? = 1 ] && error "Could not obtain data."
 
-  [ "$DIRECTION" = "total" ] && VALUE1=$(( $VALUE1 + $VALUE2 ))
+  [ "$DIRECTION" = "total" ] && VALUE1=$( echo "scale=3; $VALUE1 + $VALUE2" | bc )
 else
   VALUE1=$(getBandwidth $PERIOD $DIRECTION)
   [ $? = 1 ] && error "Could not obtain data."
