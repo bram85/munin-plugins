@@ -128,7 +128,7 @@ if [ "$DIRECTION" = "rxtx" ]; then
 
   if [ "$ESTIMATE" -eq 1 ]; then
     echo estimate.value $(getEstimate $PERIOD $VALUE1)
-    echo estimate.value2 $(getEstimate $PERIOD $VALUE2)
+    echo estimate2.value $(getEstimate $PERIOD $VALUE2)
   fi
 else
   echo value.value $VALUE1
