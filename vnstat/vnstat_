@@ -82,13 +82,13 @@ case "$1" in
 
       # show estimates
       if [ $ESTIMATE -eq 1 ]; then
-        echo "estimate.label (rx estimate for this $PERIODSTRING)"
-        echo "estimate2.label (tx estimate for this $PERIODSTRING)"
+        echo "estimate.label rx estimate for this $PERIODSTRING"
+        echo "estimate2.label tx estimate for this $PERIODSTRING"
       fi
     else
       echo "graph_title Network bandwidth for $INTERFACE ($PERIOD, $DIRECTION)"
       echo value.label $DIRECTION
-      [ $ESTIMATE -eq 1 ] && echo "estimate.label (estimate for this ${PERIODSTRING})"
+      [ $ESTIMATE -eq 1 ] && echo "estimate.label estimate for this ${PERIODSTRING}"
     fi
 
     [ -z "$warning" ] || echo value.warning $warning
