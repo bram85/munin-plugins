@@ -91,9 +91,6 @@ case "$1" in
       [ $ESTIMATE -eq 1 ] && echo "estimate.label estimate for this ${PERIODSTRING}"
     fi
 
-    [ -z "$warning" ] || echo value.warning $warning
-    [ -z "$critical" ] || echo value.critical $critical
-
     exit 0;;
   autoconf)
     if ! which vnstat > /dev/null; then
