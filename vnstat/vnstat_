@@ -43,11 +43,11 @@ getEstimate() {
       local MINUTESTOTAL=60
       ;;
     "daily")
-      local MINUTESPASSED=$(( $( date +%H ) * 60 + $( date +%M ) ))
+      local MINUTESPASSED=$( echo "$( date +%H ) * 60 + $( date +%M )" | bc )
       local MINUTESTOTAL=1440
       ;;
     "monthly")
-      local MINUTESPASSED=$(( ( $( date +%d ) - 1 ) * 1440 + $( date +%H ) * 60 + $( date +%M ) ))
+      local MINUTESPASSED=$( echo "( $( date +%d ) - 1 ) * 1440 + $( date +%H ) * 60 + $( date +%M )" | bc )
       local DAYSINMONTH=$(date -d "$(date +%Y)-$(( $(date +%m) + 1 ))-1 - 1 day" +%d)
       local MINUTESTOTAL=$(( $DAYSINMONTH * 1440 ))
       ;;
