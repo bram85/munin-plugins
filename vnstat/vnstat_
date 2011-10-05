@@ -36,7 +36,6 @@ getBandwidth() {
 getEstimate() {
   [ $# != 2 ] && exit 1
 
-  MINUTESLEFT=0
   case "$1" in
     "hourly")
       local MINUTESPASSED=$(( $( date +%M ) ))
