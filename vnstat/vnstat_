@@ -2,7 +2,7 @@
 
 # Munin plugin which reads the hourly, daily and monthly bandwidth usage.
 #
-# (c) 2011 Bram Schoenmakers
+# (c) 2011 Bram Schoenmakers <me@bramschoenmakers.nl>
 
 #%# family=contrib
 #%# capabilities=autoconf
