@@ -19,7 +19,7 @@ MB) on eth0, with separate graphs for rx and tx.
 Optionally, you can set the estimates flag in the plugin configuration file,
 for example:
 
-    [vnstat\_eth0\_monthly\_tx]
+    [vnstat_eth0_monthly_tx]
       env.estimate 1
 
 This will show the estimate for the total bandwidth usage for the given time
