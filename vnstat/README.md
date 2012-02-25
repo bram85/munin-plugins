@@ -1,4 +1,5 @@
-This plugin shows the bandwidth usage on a given network interface.
+This plugin shows the bandwidth usage on a given network interface, by
+querying the `vnstat` tool.
 
 This is a wildcard plugin, the symbolic link should be named as follows:
 
