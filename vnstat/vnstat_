@@ -47,7 +47,7 @@ getEstimate() {
       ;;
     "monthly")
       local MINUTESPASSED=$( echo "( $( date +%d ) - 1 ) * 1440 + $( date +%H ) * 60 + $( date +%M )" | bc )
-      local DAYSINMONTH=$(date -d "$(date -d month +%Y-%m-1) -1 day" +%d)
+      local DAYSINMONTH=$(date -d "$(date +%Y)-$(($(date +%m)+1))-01 -1 day" +%d)
       local MINUTESTOTAL=$(( $DAYSINMONTH * 1440 ))
       ;;
   esac
