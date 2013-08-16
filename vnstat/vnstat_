@@ -24,8 +24,14 @@ getBandwidth() {
 
   [ "$FIELD" -eq -1 ] && exit 1
 
-  local DATA=$(echo "$VNSTAT" | grep "^${1:0:1};0")
-  local MIB=$(echo "$DATA" | cut -d ';' -f $FIELD)
+  if [ $1 = "hourly" ]; then
+        local DATA=$(echo "$VNSTAT" | grep "^h;$(date +%H)")
+        local MIB=0
+        FIELD=$(( $FIELD - 2 ))
+  else
+        local DATA=$(echo "$VNSTAT" | grep "^${1:0:1};0")
+        local MIB=$(echo "$DATA" | cut -d ';' -f $FIELD)
+  fi
   local KIB=$(echo "$DATA" | cut -d ';' -f $(( $FIELD + 2 )) )
 
   echo "scale=3; $MIB + ( $KIB / 1024 )" | bc
