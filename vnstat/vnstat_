@@ -25,7 +25,7 @@ getBandwidth() {
   [ "$FIELD" -eq -1 ] && exit 1
 
   if [ $1 = "hourly" ]; then
-        local DATA=$(echo "$VNSTAT" | grep "^h;$(date +%H)")
+        local DATA=$(echo "$VNSTAT" | grep "^h;$(( 0 + $(date +%k) ))")
         local MIB=0
         FIELD=$(( $FIELD - 2 ))
   else
@@ -57,8 +57,11 @@ getEstimate() {
       local MINUTESTOTAL=$(( $DAYSINMONTH * 1440 ))
       ;;
   esac
-
-  echo "scale=1; $MINUTESTOTAL * $2 / $MINUTESPASSED" | bc
+  if [ "x$MINUTESPASSED" = "x0" ]; then
+	echo "0.0"
+  else
+  	echo "scale=1; $MINUTESTOTAL * $2 / $MINUTESPASSED" | bc
+  fi
 }
 
 PARAMS=${0#*vnstat_}
