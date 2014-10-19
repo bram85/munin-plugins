@@ -24,8 +24,14 @@ getBandwidth() {
 
   [ "$FIELD" -eq -1 ] && exit 1
 
-  local DATA=$(echo "$VNSTAT" | grep "^${1:0:1};0")
-  local MIB=$(echo "$DATA" | cut -d ';' -f $FIELD)
+  if [ $1 = "hourly" ]; then
+        local DATA=$(echo "$VNSTAT" | grep "^h;$(( 0 + $(date +%k) ))")
+        local MIB=0
+        FIELD=$(( $FIELD - 2 ))
+  else
+        local DATA=$(echo "$VNSTAT" | grep "^${1:0:1};0")
+        local MIB=$(echo "$DATA" | cut -d ';' -f $FIELD)
+  fi
   local KIB=$(echo "$DATA" | cut -d ';' -f $(( $FIELD + 2 )) )
 
   echo "scale=3; $MIB + ( $KIB / 1024 )" | bc
@@ -51,8 +57,11 @@ getEstimate() {
       local MINUTESTOTAL=$(( $DAYSINMONTH * 1440 ))
       ;;
   esac
-
-  echo "scale=1; $MINUTESTOTAL * $2 / $MINUTESPASSED" | bc
+  if [ "x$MINUTESPASSED" = "x0" ]; then
+	echo "0.0"
+  else
+  	echo "scale=1; $MINUTESTOTAL * $2 / $MINUTESPASSED" | bc
+  fi
 }
 
 PARAMS=${0#*vnstat_}
